@@ -1,0 +1,311 @@
+# 📦 MongoDB Atlas - Social Media Database
+
+## 📌 Project Overview
+
+This project demonstrates how to connect to MongoDB Atlas using `mongosh`, create a database, insert data, and perform CRUD & aggregation operations for a simple **Social Media Application**.
+
+---
+
+## ⚙️ Prerequisites
+
+* MongoDB Atlas account
+* Database user credentials
+* `mongosh` installed on your system
+
+---
+
+## 🔗 Connecting to MongoDB Atlas
+
+```bash
+mongosh "mongodb+srv://pradeepg.o022lm4.mongodb.net/" --apiVersion 1 --username pradeepgcs24_db_user
+```
+
+> ⚠️ Note: Ensure the correct password is entered. Incorrect credentials will result in:
+
+```
+MongoServerError: bad auth : authentication failed
+```
+
+---
+
+## 📂 View Databases
+
+```javascript
+show dbs
+```
+
+---
+
+## 🗄️ Create & Use Database
+
+```javascript
+use socialMediaDB
+```
+
+---
+
+## 📥 Insert Data
+
+### 👤 Users Collection
+
+```javascript
+db.users.insertMany([
+  {
+    userId: 1,
+    username: "pradeep_g",
+    name: "Pradeep G",
+    email: "pradeep@gmail.com",
+    followers: 520,
+    following: 180,
+    joinedOn: "2024-06-15"
+  },
+  {
+    userId: 2,
+    username: "anita_raj",
+    name: "Anita Raj",
+    email: "anita@gmail.com",
+    followers: 1200,
+    following: 300,
+    joinedOn: "2023-12-01"
+  },
+  {
+    userId: 3,
+    username: "ravi_kumar",
+    name: "Ravi Kumar",
+    email: "ravi@gmail.com",
+    followers: 850,
+    following: 400,
+    joinedOn: "2024-01-20"
+  }
+])
+```
+
+---
+
+### 📝 Posts Collection
+
+```javascript
+db.posts.insertMany([
+  {
+    postId: 101,
+    userId: 1,
+    content: "Learning MongoDB is fun! 🚀",
+    likes: 120,
+    comments: 15,
+    tags: ["mongodb", "database", "learning"],
+    createdAt: "2025-01-10"
+  },
+  {
+    postId: 102,
+    userId: 2,
+    content: "Design Thinking helps build better products.",
+    likes: 340,
+    comments: 42,
+    tags: ["design", "ux", "hci"],
+    createdAt: "2025-01-12"
+  },
+  {
+    postId: 103,
+    userId: 3,
+    content: "Flutter + Firebase = ❤️",
+    likes: 210,
+    comments: 28,
+    tags: ["flutter", "firebase", "appdev"],
+    createdAt: "2025-01-15"
+  }
+])
+```
+
+---
+
+### 💬 Comments Collection
+
+```javascript
+db.comments.insertMany([
+  {
+    commentId: 201,
+    postId: 101,
+    userId: 2,
+    comment: "Absolutely true!",
+    commentedAt: "2025-01-11"
+  },
+  {
+    commentId: 202,
+    postId: 102,
+    userId: 1,
+    comment: "Very informative post 👍",
+    commentedAt: "2025-01-13"
+  }
+])
+```
+
+---
+
+## 🔍 Query Operations
+
+### Find posts by a user
+
+```javascript
+db.posts.find({ userId: 1 })
+```
+
+### Find popular posts
+
+```javascript
+db.posts.find({ likes: { $gt: 200 } })
+```
+
+### Find users with more than 500 followers
+
+```javascript
+db.users.find({ followers: { $gt: 500 } })
+```
+
+### Projection (specific fields)
+
+```javascript
+db.users.find({}, { _id: 0, username: 1, followers: 1 })
+```
+
+### Sort & Limit
+
+```javascript
+db.users.find().sort({ followers: -1 }).limit(1)
+```
+
+---
+
+## ✏️ Update Operations
+
+### Increase followers
+
+```javascript
+db.users.updateOne(
+  { username: "pradeep_g" },
+  { $inc: { followers: 50 } }
+)
+```
+
+### Update email
+
+```javascript
+db.users.updateOne(
+  { username: "ravi_kumar" },
+  { $set: { email: "ravikumar@social.com" } }
+)
+```
+
+### Add tag to post
+
+```javascript
+db.posts.updateOne(
+  { postId: 101 },
+  { $push: { tags: "nosql" } }
+)
+```
+
+---
+
+## ❌ Delete Operations
+
+### Delete a comment
+
+```javascript
+db.comments.deleteOne({ commentId: 201 })
+```
+
+### Delete low-liked posts
+
+```javascript
+db.posts.deleteMany({ likes: { $lt: 100 } })
+```
+
+---
+
+## 📊 Aggregation Operations
+
+### Count posts per user
+
+```javascript
+db.posts.aggregate([
+  { $group: { _id: "$userId", totalPosts: { $sum: 1 } } }
+])
+```
+
+### Average likes
+
+```javascript
+db.posts.aggregate([
+  { $group: { _id: null, avgLikes: { $avg: "$likes" } } }
+])
+```
+
+### Most liked post
+
+```javascript
+db.posts.aggregate([
+  { $sort: { likes: -1 } },
+  { $limit: 1 }
+])
+```
+
+### Join posts with users
+
+```javascript
+db.posts.aggregate([
+  {
+    $lookup: {
+      from: "users",
+      localField: "userId",
+      foreignField: "userId",
+      as: "userDetails"
+    }
+  }
+])
+```
+
+---
+
+## ⚡ Indexing
+
+```javascript
+db.users.createIndex({ username: 1 })
+```
+
+---
+
+## 📅 Advanced Queries
+
+### Users joined after 2024
+
+```javascript
+db.users.find({ joinedOn: { $gt: "2024-01-01" } })
+```
+
+### Top active users
+
+```javascript
+db.posts.aggregate([
+  { $group: { _id: "$userId", postCount: { $sum: 1 } } },
+  { $sort: { postCount: -1 } },
+  { $limit: 2 }
+])
+```
+
+---
+
+## ✅ Key Learnings
+
+* Connecting to MongoDB Atlas using CLI
+* CRUD operations (Create, Read, Update, Delete)
+* Aggregation framework
+* Indexing for performance
+* Data modeling for social media apps
+
+---
+
+## 🚀 Conclusion
+
+This project provides a hands-on understanding of MongoDB operations using a real-world **social media dataset**.
+
+---

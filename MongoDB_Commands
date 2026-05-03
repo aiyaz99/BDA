@@ -1,0 +1,177 @@
+# 📘 Execution of MongoDB Commands
+
+## 🧑‍💻 Experiment Title
+
+Execution of MongoDB Commands for Database Operations
+
+---
+
+## 🎯 Objective
+
+To perform CRUD operations using MongoDB such as database creation, collection handling, insertion, querying, updating, and deletion.
+
+---
+
+## 🛠️ Requirements
+
+* MongoDB Installed
+* Mongo Shell (mongosh)
+* Linux/Ubuntu System
+
+---
+
+## ▶️ Procedure
+
+### Step 1: Start MongoDB
+
+```bash
+sudo systemctl start mongod
+```
+
+### Step 2: Open Mongo Shell
+
+```bash
+mongosh
+```
+
+---
+
+## 📂 MongoDB Commands Executed
+
+### 1. Show Databases
+
+```js
+show dbs
+```
+
+---
+
+### 2. Create / Use Database
+
+```js
+use social_media
+```
+
+---
+
+### 3. Create Collection & Insert Document
+
+```js
+db.users.insertOne({
+  name: "Pradeep",
+  age: 21,
+  city: "Bangalore"
+});
+```
+
+---
+
+### 4. Insert Multiple Documents
+
+```js
+db.users.insertMany([
+  {name: "Ravi", age: 22, city: "Mysore"},
+  {name: "Anu", age: 20, city: "Delhi"}
+]);
+```
+
+---
+
+### 5. View Data
+
+```js
+db.users.find()
+```
+
+---
+
+### 6. Pretty Format Output
+
+```js
+db.users.find().pretty()
+```
+
+---
+
+### 7. Query with Condition
+
+```js
+db.users.find({age: 21})
+```
+
+---
+
+### 8. Update Document
+
+```js
+db.users.updateOne(
+  {name: "Pradeep"},
+  {$set: {city: "Bengaluru"}}
+);
+```
+
+---
+
+### 9. Delete Document
+
+```js
+db.users.deleteOne({name: "Ravi"})
+```
+
+---
+
+### 10. Delete All Documents
+
+```js
+db.users.deleteMany({})
+```
+
+---
+
+### 11. Drop Collection
+
+```js
+db.users.drop()
+```
+
+---
+
+### 12. Drop Database
+
+```js
+db.dropDatabase()
+```
+
+---
+
+## ✅ Result
+
+Successfully executed MongoDB commands including database creation, insertion, querying, updating, and deletion.
+
+---
+
+## 📚 Conclusion
+
+MongoDB is a flexible NoSQL database that stores data in JSON-like format, making it ideal for modern applications.
+
+---
+
+## 🔍 Viva Questions
+
+**Q1: What is MongoDB?**
+A NoSQL database that stores data in document format (JSON/BSON).
+
+**Q2: What is a Collection?**
+A group of documents, similar to a table in RDBMS.
+
+**Q3: What is a Document?**
+A single record stored in JSON-like format.
+
+**Q4: Difference between SQL and MongoDB?**
+SQL uses tables; MongoDB uses collections and documents.
+
+---
+
+## 🎉 Final Note
+
+MongoDB is widely used in web applications due to its flexibility and scalability.

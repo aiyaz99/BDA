@@ -1,0 +1,195 @@
+# 📚 Cassandra CQL - Library Management System
+
+## 📌 Project Overview
+
+This project demonstrates how to use **Apache Cassandra (CQLSH)** for a simple **Library Management System**. It covers:
+
+* Keyspace and table creation
+* Composite primary keys
+* Counter tables
+* Batch inserts
+* CSV import/export
+* Query operations
+
+---
+
+## ⚙️ Environment Details
+
+* Cassandra Version: 4.1.11
+* CQLSH Version: 6.2.1
+* Note: Version mismatch warning may appear but basic operations work fine.
+
+---
+
+# 🗄️ Keyspace Setup
+
+## ➤ Create Keyspace
+
+```sql id="ks1"
+CREATE KEYSPACE Library
+WITH replication = {
+    'class': 'SimpleStrategy',
+    'replication_factor': 1
+};
+```
+
+## ➤ Use Keyspace
+
+```sql id="ks2"
+USE Library;
+```
+
+---
+
+# 📋 Table Creation
+
+## ➤ Library_Info Table (Composite Key)
+
+```sql id="tbl1"
+CREATE TABLE Library_Info (
+    Stud_Id INT,
+    Book_Id INT,
+    Stud_Name TEXT,
+    Book_Name TEXT,
+    Date_Issue DATE,
+    PRIMARY KEY (Stud_Id, Book_Id)
+);
+```
+
+> 🔹 Composite Key: `(Stud_Id, Book_Id)`
+
+* `Stud_Id` → Partition Key
+* `Book_Id` → Clustering Key
+
+---
+
+## ➤ Book_Counter Table
+
+```sql id="tbl2"
+CREATE TABLE Book_Counter (
+    Stud_Id INT,
+    Book_Name TEXT,
+    Count counter,
+    PRIMARY KEY (Stud_Id, Book_Name)
+);
+```
+
+> 🔹 Used to track how many times a student borrowed a book.
+
+---
+
+# 📥 Insert Data (Batch)
+
+```sql id="ins1"
+BEGIN BATCH
+
+INSERT INTO Library_Info (Stud_Id, Book_Id, Stud_Name, Book_Name, Date_Issue)
+VALUES (112, 1, 'Pradeep', 'BDA', '2026-04-01');
+
+INSERT INTO Library_Info (Stud_Id, Book_Id, Stud_Name, Book_Name, Date_Issue)
+VALUES (112, 2, 'Pradeep', 'DBMS', '2026-04-02');
+
+INSERT INTO Library_Info (Stud_Id, Book_Id, Stud_Name, Book_Name, Date_Issue)
+VALUES (113, 3, 'Ravi', 'AI', '2026-04-03');
+
+APPLY BATCH;
+```
+
+---
+
+# 🔍 Query Data
+
+## ➤ View All Records
+
+```sql id="read1"
+SELECT * FROM Library_Info;
+```
+
+## ➤ Get Books Issued by Student
+
+```sql id="read2"
+SELECT Book_Name FROM Library_Info
+WHERE Stud_Id = 112;
+```
+
+---
+
+# 🔢 Counter Operations
+
+## ➤ Increment Counter
+
+```sql id="cnt1"
+UPDATE Book_Counter
+SET Count = Count + 1
+WHERE Stud_Id = 112 AND Book_Name = 'BDA';
+```
+
+> Run multiple times to increase count.
+
+## ➤ View Counter Value
+
+```sql id="cnt2"
+SELECT * FROM Book_Counter
+WHERE Stud_Id = 112 AND Book_Name = 'BDA';
+```
+
+---
+
+# 📁 Export Data to CSV
+
+```sql id="csv1"
+COPY Library_Info TO 'library_info.csv' WITH HEADER = true;
+```
+
+---
+
+# 📥 Import Data from CSV
+
+## ⚠️ Common Error
+
+Incorrect column order causes parsing errors like:
+
+* `Failed to parse Ravi`
+* `Failed to parse AI`
+
+👉 This happens because Cassandra expects the correct column order, especially for `DATE`.
+
+---
+
+## ✅ Correct Import Command
+
+```sql id="csv2"
+COPY Library_Info (Stud_Id, Book_Id, Book_Name, Date_Issue, Stud_Name)
+FROM 'library_info.csv' WITH HEADER = true;
+```
+
+---
+
+# ⚠️ Key Notes
+
+* Column order **must match CSV structure**
+* `DATE` fields must follow format: `YYYY-MM-DD`
+* Counter columns **cannot be inserted directly**, only updated
+* Batch operations improve efficiency for multiple inserts
+
+---
+
+# ✅ Key Learnings
+
+* Composite primary keys in Cassandra
+* Counter tables for tracking counts
+* Batch insert operations
+* CSV import/export using `COPY`
+* Handling common data parsing errors
+
+---
+
+# 🚀 Conclusion
+
+This project provides hands-on experience with **Cassandra data modeling and operations**, especially useful for:
+
+* Library systems
+* Tracking usage statistics
+* Handling large-scale distributed data
+
+---

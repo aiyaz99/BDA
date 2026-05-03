@@ -1,0 +1,235 @@
+# 📦 Cassandra / NoSQL Student Database Operations
+
+## 📌 Project Overview
+
+This project demonstrates fundamental NoSQL operations using a **Student Database**. It covers:
+
+* CRUD Operations
+* Querying with conditions
+* Handling NULL values
+* Counting records
+* Sorting, Limiting, Skipping
+* Aggregate functions
+
+---
+
+## 🗄️ Dataset Structure
+
+Each student record contains:
+
+* `rollNo` (Primary Key)
+* `name`
+* `dept`
+* `marks`
+* `city`
+
+---
+
+# 🔹 1️⃣ CRUD Operations
+
+## ➤ Insert Records
+
+```javascript
+db.students.insertMany([
+  { rollNo: 101, name: "Amit", dept: "CSE", marks: 85, city: "Bangalore" },
+  { rollNo: 102, name: "Neha", dept: "ECE", marks: 78, city: "Mysore" },
+  { rollNo: 103, name: "Rahul", dept: "ISE", marks: 92, city: "Delhi" },
+  { rollNo: 104, name: "Sneha", dept: "CSE", marks: 35, city: "Chennai" },
+  { rollNo: 105, name: "Kiran", dept: "ECE", marks: 60, city: "Hyderabad" }
+])
+```
+
+## ➤ Update Record
+
+```javascript
+db.students.updateOne(
+  { rollNo: 101 },
+  { $set: { marks: 90 } }
+)
+```
+
+## ➤ Delete Record
+
+```javascript
+db.students.deleteOne({ rollNo: 105 })
+```
+
+## ➤ Display All Students
+
+```javascript
+db.students.find()
+```
+
+## ➤ Delete Students with Marks < 40
+
+```javascript
+db.students.deleteMany({ marks: { $lt: 40 } })
+```
+
+---
+
+# 🔹 2️⃣ Finding Documents Based on Criteria
+
+## ➤ CSE students with marks > 80
+
+```javascript
+db.students.find({
+  dept: "CSE",
+  marks: { $gt: 80 }
+})
+```
+
+## ➤ Students from CSE or ECE
+
+```javascript
+db.students.find({
+  dept: { $in: ["CSE", "ECE"] }
+})
+```
+
+## ➤ Name & Marks between 60 and 90
+
+```javascript
+db.students.find(
+  { marks: { $gte: 60, $lte: 90 } },
+  { _id: 0, name: 1, marks: 1 }
+)
+```
+
+---
+
+# 🔹 3️⃣ Dealing with NULL Values
+
+## ➤ Insert NULL Value
+
+```javascript
+db.students.insertOne({
+  rollNo: 106,
+  name: "Ravi",
+  dept: "ISE",
+  marks: 70,
+  city: null
+})
+```
+
+## ➤ Retrieve NULL City
+
+```javascript
+db.students.find({ city: null })
+```
+
+## ➤ Field Does Not Exist
+
+```javascript
+db.students.find({ city: { $exists: false } })
+```
+
+## ➤ Update NULL to "Unknown"
+
+```javascript
+db.students.updateMany(
+  { city: null },
+  { $set: { city: "Unknown" } }
+)
+```
+
+---
+
+# 🔹 4️⃣ Count Operations
+
+## ➤ Total Students
+
+```javascript
+db.students.countDocuments()
+```
+
+## ➤ Students in ISE
+
+```javascript
+db.students.countDocuments({ dept: "ISE" })
+```
+
+## ➤ Students with marks > 75
+
+```javascript
+db.students.countDocuments({ marks: { $gt: 75 } })
+```
+
+---
+
+# 🔹 5️⃣ Limit, Sort, Skip
+
+## ➤ Sort by Marks (Descending)
+
+```javascript
+db.students.find().sort({ marks: -1 })
+```
+
+## ➤ Top 3 Students
+
+```javascript
+db.students.find().sort({ marks: -1 }).limit(3)
+```
+
+## ➤ Skip First 2, Show Next 3
+
+```javascript
+db.students.find().skip(2).limit(3)
+```
+
+---
+
+# 🔹 6️⃣ Aggregate Functions
+
+## ➤ Average Marks
+
+```javascript
+db.students.aggregate([
+  { $group: { _id: null, avgMarks: { $avg: "$marks" } } }
+])
+```
+
+## ➤ Total Marks Department-wise
+
+```javascript
+db.students.aggregate([
+  {
+    $group: {
+      _id: "$dept",
+      totalMarks: { $sum: "$marks" }
+    }
+  }
+])
+```
+
+## ➤ Maximum Marks per Department
+
+```javascript
+db.students.aggregate([
+  {
+    $group: {
+      _id: "$dept",
+      maxMarks: { $max: "$marks" }
+    }
+  }
+])
+```
+
+---
+
+# ✅ Key Learnings
+
+* CRUD operations in NoSQL databases
+* Filtering using conditions
+* Handling NULL and missing fields
+* Counting documents efficiently
+* Sorting, pagination (limit & skip)
+* Aggregation framework basics
+
+---
+
+# 🚀 Conclusion
+
+This lab provides a complete understanding of **student data management using NoSQL queries**, which is useful for real-world applications like analytics dashboards and student portals.
+
+---

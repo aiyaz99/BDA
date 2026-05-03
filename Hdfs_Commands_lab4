@@ -1,0 +1,162 @@
+# 📘 Execution of HDFS Commands in Hadoop
+
+## 🧑‍💻 Experiment Title
+
+Execution of HDFS Commands for Interaction with Hadoop Environment
+
+---
+
+## 🎯 Objective
+
+To perform and understand various Hadoop Distributed File System (HDFS) commands for file and directory management within a Hadoop environment.
+
+---
+
+## 🛠️ Requirements
+
+* Ubuntu/Linux System
+* Hadoop Installed (Single Node Setup)
+* Java Installed
+* Terminal Access
+
+---
+
+## ▶️ Procedure
+
+### Step 1: Start Hadoop HDFS Services
+
+```bash
+start-dfs.sh
+```
+
+### Step 2: Verify Services
+
+```bash
+jps
+```
+
+---
+
+## 📂 HDFS Commands Executed
+
+### 1. List Root Directory
+
+```bash
+hdfs dfs -ls /
+```
+
+### 2. Create Directory
+
+```bash
+hdfs dfs -mkdir /user/pradeep
+```
+
+### 3. Create Nested Directory
+
+```bash
+hdfs dfs -mkdir -p /user/pradeep/data/input
+```
+
+### 4. Upload File to HDFS
+
+```bash
+hdfs dfs -put sample.txt /user/pradeep/data/input
+```
+
+### 5. List Files in Directory
+
+```bash
+hdfs dfs -ls /user/pradeep/data/input
+```
+
+### 6. Display File Content
+
+```bash
+hdfs dfs -cat /user/pradeep/data/input/sample.txt
+```
+
+### 7. Download File from HDFS
+
+```bash
+hdfs dfs -get /user/pradeep/data/input/sample.txt /home/hadoop/
+```
+
+### 8. Copy File in HDFS
+
+```bash
+hdfs dfs -cp /user/pradeep/data/input/sample.txt /user/pradeep/data/sample_copy.txt
+```
+
+### 9. Rename/Move File
+
+```bash
+hdfs dfs -mv /user/pradeep/data/sample_copy.txt /user/pradeep/data/sample_renamed.txt
+```
+
+### 10. Check Disk Usage
+
+```bash
+hdfs dfs -du /user/pradeep
+```
+
+### 11. Set Replication Factor
+
+```bash
+hdfs dfs -setrep -w 2 /user/pradeep/data/input/sample.txt
+```
+
+### 12. Delete File
+
+```bash
+hdfs dfs -rm /user/pradeep/data/input/sample.txt
+```
+
+### 13. Delete Directory
+
+```bash
+hdfs dfs -rm -r /user/pradeep/data
+```
+
+---
+
+## ⚠️ Common Warning
+
+```bash
+WARN util.NativeCodeLoader: Unable to load native-hadoop library
+```
+
+🔹 This is not an error and can be ignored.
+
+---
+
+## ✅ Result
+
+Successfully executed various HDFS commands such as directory creation, file upload/download, file manipulation, and permission management in the Hadoop environment.
+
+---
+
+## 📚 Conclusion
+
+This experiment demonstrates how HDFS commands are used to manage distributed storage efficiently. It provides hands-on experience with Hadoop file system operations.
+
+---
+
+## 🔍 Viva Questions
+
+**Q1: What is HDFS?**
+HDFS (Hadoop Distributed File System) is a distributed storage system designed to store large datasets across multiple machines.
+
+**Q2: What is NameNode?**
+NameNode manages metadata and controls access to files in HDFS.
+
+**Q3: What is DataNode?**
+DataNode stores actual data blocks in HDFS.
+
+**Q4: What is replication factor?**
+It defines how many copies of data are stored across the cluster.
+
+---
+
+## 🎉 Final Note
+
+HDFS is a core component of Hadoop and is widely used for big data storage and processing.

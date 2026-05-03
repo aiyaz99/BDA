@@ -1,0 +1,172 @@
+# 📘 Execution of Cassandra Commands
+
+## 🧑‍💻 Experiment Title
+
+Execution of Basic Cassandra (CQL) Commands
+
+---
+
+## 🎯 Objective
+
+To perform database operations using Cassandra Query Language (CQL) such as keyspace creation, table creation, insertion, retrieval, and deletion.
+
+---
+
+## 🛠️ Requirements
+
+* Apache Cassandra Installed
+* cqlsh (Cassandra Query Shell)
+* Linux/Ubuntu System
+
+---
+
+## ▶️ Procedure
+
+### Step 1: Start Cassandra
+
+```bash
+sudo service cassandra start
+```
+
+### Step 2: Open CQL Shell
+
+```bash
+cqlsh
+```
+
+---
+
+## 📂 Cassandra Commands Executed
+
+### 1. Create Keyspace
+
+```sql
+CREATE KEYSPACE library
+WITH replication = {'class':'SimpleStrategy','replication_factor':1};
+```
+
+---
+
+### 2. Use Keyspace
+
+```sql
+USE library;
+```
+
+---
+
+### 3. Create Table
+
+```sql
+CREATE TABLE Library_Info (
+    Stud_Id INT,
+    Book_Id INT,
+    Stud_Name TEXT,
+    Book_Name TEXT,
+    Date_Issue DATE,
+    PRIMARY KEY (Stud_Id, Book_Id)
+);
+```
+
+---
+
+### 4. Insert Data
+
+```sql
+INSERT INTO Library_Info (Stud_Id, Book_Id, Stud_Name, Book_Name, Date_Issue)
+VALUES (112, 1, 'Pradeep', 'BDA', '2026-04-01');
+```
+
+---
+
+### 5. Insert More Records
+
+```sql
+INSERT INTO Library_Info VALUES (112, 2, 'Pradeep', 'DBMS', '2026-04-02');
+INSERT INTO Library_Info VALUES (113, 3, 'Ravi', 'AI', '2026-04-03');
+```
+
+---
+
+### 6. View Data
+
+```sql
+SELECT * FROM Library_Info;
+```
+
+---
+
+### 7. Filter Data
+
+```sql
+SELECT * FROM Library_Info WHERE Stud_Id = 112;
+```
+
+---
+
+### 8. Update Record
+
+```sql
+UPDATE Library_Info
+SET Book_Name = 'Big Data Analytics'
+WHERE Stud_Id = 112 AND Book_Id = 1;
+```
+
+---
+
+### 9. Delete Record
+
+```sql
+DELETE FROM Library_Info
+WHERE Stud_Id = 113 AND Book_Id = 3;
+```
+
+---
+
+### 10. Drop Table
+
+```sql
+DROP TABLE Library_Info;
+```
+
+---
+
+### 11. Drop Keyspace
+
+```sql
+DROP KEYSPACE library;
+```
+
+---
+
+## ✅ Result
+
+Successfully executed Cassandra commands including keyspace creation, table operations, and data manipulation.
+
+---
+
+## 📚 Conclusion
+
+Cassandra provides a scalable and distributed NoSQL database system suitable for handling large volumes of structured data efficiently.
+
+---
+
+## 🔍 Viva Questions
+
+**Q1: What is Cassandra?**
+A distributed NoSQL database designed for high availability and scalability.
+
+**Q2: What is a Keyspace?**
+A container for tables, similar to a database in RDBMS.
+
+**Q3: What is CQL?**
+Cassandra Query Language used to interact with Cassandra.
+
+**Q4: What is Primary Key?**
+Used to uniquely identify records in a table.
+
+---
+
+## 🎉 Final Note
+
+Cassandra is widely used in big data applications requiring fault tolerance and scalability.

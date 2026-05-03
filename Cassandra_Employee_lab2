@@ -1,0 +1,198 @@
+# 📦 Cassandra CQL - Employee Database
+
+## 📌 Project Overview
+
+This project demonstrates how to use **Apache Cassandra (CQLSH)** to:
+
+* Manage keyspaces
+* Create and modify tables
+* Perform CRUD operations
+* Use collections (SET)
+* Apply TTL (Time-To-Live)
+
+---
+
+## ⚙️ Prerequisites
+
+* Apache Cassandra installed
+* `cqlsh` (Cassandra Query Language Shell)
+
+---
+
+# 🗄️ Keyspace Management
+
+## ➤ View Existing Keyspaces
+
+```sql id="v1ksp1"
+DESCRIBE keyspaces;
+```
+
+## ➤ Drop Existing Keyspace
+
+```sql id="v1ksp2"
+DROP KEYSPACE IF EXISTS employee;
+```
+
+## ➤ Create Keyspace
+
+```sql id="v1ksp3"
+CREATE KEYSPACE Employee
+WITH replication = {
+  'class': 'SimpleStrategy',
+  'replication_factor': 1
+};
+```
+
+## ➤ Use Keyspace
+
+```sql id="v1ksp4"
+USE Employee;
+```
+
+---
+
+# 📋 Table Creation
+
+## ➤ Create Employee Table
+
+```sql id="tbl1"
+CREATE TABLE Employee_Info (
+  Emp_Id INT PRIMARY KEY,
+  Emp_Name TEXT,
+  Designation TEXT,
+  Date_of_Joining DATE,
+  Salary FLOAT,
+  Dept_Name TEXT
+);
+```
+
+## ➤ Describe Table
+
+```sql id="tbl2"
+DESCRIBE TABLE Employee_Info;
+```
+
+---
+
+# 📥 Insert Data (Batch Operation)
+
+```sql id="ins1"
+BEGIN BATCH
+INSERT INTO Employee_Info (Emp_Id, Emp_Name, Designation, Date_of_Joining, Salary, Dept_Name)
+VALUES (120, 'Priyanka GH', 'Developer', '2024-05-06', 100000, 'Engineering');
+
+INSERT INTO Employee_Info (Emp_Id, Emp_Name, Designation, Date_of_Joining, Salary, Dept_Name)
+VALUES (121, 'Shreya', 'Developer', '2024-05-06', 90000, 'Management');
+
+INSERT INTO Employee_Info (Emp_Id, Emp_Name, Designation, Date_of_Joining, Salary, Dept_Name)
+VALUES (122, 'Sadhana', 'Engineer', '2024-05-07', 120000, 'Engineering');
+APPLY BATCH;
+```
+
+---
+
+# 🔍 Read Data
+
+```sql id="read1"
+SELECT * FROM Employee_Info;
+```
+
+---
+
+# ✏️ Update Operations
+
+## ➤ Update Employee Details
+
+```sql id="upd1"
+UPDATE Employee_Info
+SET Emp_Name = 'Rachana', Dept_Name = 'HR'
+WHERE Emp_Id = 121;
+```
+
+---
+
+# 🔄 Filtering (Note)
+
+```sql id="flt1"
+SELECT * FROM Employee_Info ALLOW FILTERING;
+```
+
+> ⚠️ `ALLOW FILTERING` should be used carefully as it may impact performance.
+
+---
+
+# 🛠️ Alter Table
+
+## ➤ Add Collection Column (SET)
+
+```sql id="alt1"
+ALTER TABLE Employee_Info
+ADD Projects SET<TEXT>;
+```
+
+---
+
+# 📌 Working with Collections
+
+## ➤ Update Projects
+
+```sql id="col1"
+UPDATE Employee_Info
+SET Projects = {'Project A', 'Project B'}
+WHERE Emp_Id = 120;
+
+UPDATE Employee_Info
+SET Projects = {'Project C'}
+WHERE Emp_Id = 121;
+
+UPDATE Employee_Info
+SET Projects = {'Project A', 'Project D'}
+WHERE Emp_Id = 122;
+```
+
+## ➤ View Selected Fields
+
+```sql id="col2"
+SELECT Emp_Id, Emp_Name, Projects FROM Employee_Info;
+```
+
+---
+
+# ⏳ TTL (Time-To-Live)
+
+## ➤ Apply TTL (15 seconds)
+
+```sql id="ttl1"
+UPDATE Employee_Info
+USING TTL 15
+SET Salary = 0
+WHERE Emp_Id = 121;
+```
+
+## ➤ Observe TTL Effect
+
+```sql id="ttl2"
+SELECT * FROM Employee_Info;
+```
+
+> After 15 seconds, the `Salary` field becomes `NULL`.
+
+---
+
+# ✅ Key Learnings
+
+* Keyspace creation and deletion
+* Table creation and schema design
+* Batch insert operations
+* Update and query execution
+* Use of collection data types (SET)
+* TTL for automatic data expiration
+* Cassandra query limitations (`ALLOW FILTERING`)
+
+---
+
+# 🚀 Conclusion
+
+This lab demonstrates practical usage of **Cassandra Query Language (CQL)** for managing structured data efficiently in a distributed database system.
+
+---
